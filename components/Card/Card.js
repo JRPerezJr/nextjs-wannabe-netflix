@@ -3,7 +3,10 @@ import { useState } from 'react';
 
 import styles from './Card.module.css';
 
-const Card = ({ imgUrl, size = 'medium' }) => {
+import { motion } from 'framer-motion';
+import cls from 'classnames';
+
+const Card = ({ id, imgUrl, size = 'medium' }) => {
   const [imgSrc, setImgSrc] = useState(imgUrl);
 
   const classMap = {
@@ -11,10 +14,15 @@ const Card = ({ imgUrl, size = 'medium' }) => {
     medium: styles.mdItem,
     small: styles.smItem,
   };
+
+  const scale = id === 0 ? { scaleY: 1.1 } : { scale: 1.1 };
+
   return (
     <div className={styles.container}>
-      <h1>Card</h1>
-      <div className={classMap[size]}>
+      <motion.div
+        className={cls(styles.imgMotionWrapper, classMap[size])}
+        whileHover={{ ...scale }}
+      >
         <Image
           className={styles.cardImg}
           src={imgSrc}
@@ -26,7 +34,7 @@ const Card = ({ imgUrl, size = 'medium' }) => {
             )
           }
         />
-      </div>
+      </motion.div>
     </div>
   );
 };
