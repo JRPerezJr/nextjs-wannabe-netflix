@@ -4,6 +4,7 @@ import Link from 'next/link';
 import router from 'next/router';
 
 import styles from './Navbar.module.css';
+import Image from 'next/image';
 
 const Navbar = ({ username }) => {
   const [showDropdown, setShowDropdown] = useState(false);
@@ -12,7 +13,14 @@ const Navbar = ({ username }) => {
     <div className={styles.container}>
       <div className={styles.wrapper}>
         <a className={styles.logoLink} href="/">
-          <div className={styles.logoWrapper}>Netflix</div>
+          <div className={styles.logoWrapper}>
+            <Image
+              src={'/static/netflix.svg'}
+              alt="netflix logo"
+              width="128px"
+              height="34px"
+            />
+          </div>
         </a>
         <ul className={styles.navItems}>
           <li className={styles.navItem} onClick={() => router.push('/')}>
@@ -32,6 +40,12 @@ const Navbar = ({ username }) => {
               onClick={() => setShowDropdown(!showDropdown)}
             >
               <p className={styles.username}>{username}</p>
+              <Image
+                src={'/static/expand_icon.svg'}
+                alt="expand dropdown"
+                width="24px"
+                height="24px"
+              />
             </button>
 
             {showDropdown && (
