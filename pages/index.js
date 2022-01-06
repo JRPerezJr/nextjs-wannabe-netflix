@@ -1,8 +1,27 @@
 import Banner from '../components/Banner/Banner';
-import Card from '../components/Card/Card';
 import Layout from '../components/Layout';
+import SectionCards from '../components/SectionCards/SectionCards';
+
+import styles from '../styles/Home.module.css';
 
 export default function Home() {
+  const disneyVideos = [
+    {
+      imgUrl: '/static/clifford.webp',
+    },
+    {
+      imgUrl: '/static/clifford.webp',
+    },
+    {
+      imgUrl: '/static/clifford.webp',
+    },
+    {
+      imgUrl: '/static/clifford.webp',
+    },
+    {
+      imgUrl: '/static/clifford.webp',
+    },
+  ];
   return (
     <Layout>
       <Banner
@@ -10,9 +29,14 @@ export default function Home() {
         subTitle="A Big Red Doge"
         imgUrl="/static/clifford.webp"
       />
-      <Card imgUrl="/static/clifford.webp" size="large" />
-      <Card imgUrl="/static/clifford.webp" size="medium" />
-      <Card imgUrl="/static/clifford.webp" size="small" />
+      <div className={styles.sectionWrapper}>
+        <SectionCards title="Disney" videos={disneyVideos} size="large" />
+        <SectionCards
+          title="Productivity"
+          videos={disneyVideos}
+          size="medium"
+        />
+      </div>
     </Layout>
   );
 }
