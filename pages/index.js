@@ -1,32 +1,17 @@
 import Banner from '../components/Banner/Banner';
 import Layout from '../components/Layout';
 import SectionCards from '../components/SectionCards/SectionCards';
+import { getVideos } from '../lib/videos';
 
 import styles from '../styles/Home.module.css';
 
-export default function Home() {
-  const disneyVideos = [
-    {
-      id: 0,
-      imgUrl: '/static/clifford.webp',
-    },
-    {
-      id: 1,
-      imgUrl: '/static/clifford.webp',
-    },
-    {
-      id: 2,
-      imgUrl: '/static/clifford.webp',
-    },
-    {
-      id: 3,
-      imgUrl: '/static/clifford.webp',
-    },
-    {
-      id: 4,
-      imgUrl: '/static/clifford.webp',
-    },
-  ];
+export async function getServerSideProps() {
+  const disneyVideos = await getVideos();
+
+  return { props: { disneyVideos } };
+}
+
+export default function Home({ disneyVideos }) {
   return (
     <Layout>
       <Banner
