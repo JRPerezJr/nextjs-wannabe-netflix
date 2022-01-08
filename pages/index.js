@@ -21,11 +21,13 @@ export default function Home({ disneyVideos }) {
       />
       <div className={styles.sectionWrapper}>
         <SectionCards title="Disney" videos={disneyVideos} size="large" />
+        <SectionCards title="Travel" videos={disneyVideos} size="small" />
         <SectionCards
           title="Productivity"
           videos={disneyVideos}
           size="medium"
         />
+        <SectionCards title="Popular" videos={disneyVideos} size="small" />
       </div>
     </Layout>
   );
