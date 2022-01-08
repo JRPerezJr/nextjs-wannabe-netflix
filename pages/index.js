@@ -1,17 +1,30 @@
 import Banner from '../components/Banner/Banner';
 import Layout from '../components/Layout';
 import SectionCards from '../components/SectionCards/SectionCards';
-import { getVideos } from '../lib/videos';
+import { getPopularVideos, getVideos } from '../lib/videos';
 
 import styles from '../styles/Home.module.css';
 
 export async function getServerSideProps() {
-  const disneyVideos = await getVideos();
+  const disneyVideos = await getVideos('disney trailers');
 
-  return { props: { disneyVideos } };
+  const productivityVideos = await getVideos('productivity');
+
+  const travelVideos = await getVideos('travel');
+
+  const popularVideos = await getPopularVideos();
+
+  return {
+    props: { disneyVideos, popularVideos, productivityVideos, travelVideos },
+  };
 }
 
-export default function Home({ disneyVideos }) {
+export default function Home({
+  disneyVideos,
+  popularVideos,
+  productivityVideos,
+  travelVideos,
+}) {
   return (
     <Layout>
       <Banner
@@ -21,13 +34,13 @@ export default function Home({ disneyVideos }) {
       />
       <div className={styles.sectionWrapper}>
         <SectionCards title="Disney" videos={disneyVideos} size="large" />
-        <SectionCards title="Travel" videos={disneyVideos} size="small" />
+        <SectionCards title="Travel" videos={travelVideos} size="small" />
         <SectionCards
           title="Productivity"
-          videos={disneyVideos}
+          videos={productivityVideos}
           size="medium"
         />
-        <SectionCards title="Popular" videos={disneyVideos} size="small" />
+        <SectionCards title="Popular" videos={popularVideos} size="small" />
       </div>
     </Layout>
   );
