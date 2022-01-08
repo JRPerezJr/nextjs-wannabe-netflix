@@ -1,7 +1,7 @@
 import Card from '../Card/Card';
 import styles from './SectionCards.module.css';
 
-const SectionCards = ({ title, size, videos }) => {
+const SectionCards = ({ title, size, videos = [] }) => {
   return (
     <section className={styles.container}>
       <h2 className={styles.title}>{title}</h2>
