@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import Head from 'next/head';
 import Image from 'next/image';
@@ -7,12 +7,26 @@ import validator from 'validator';
 
 import styles from '../styles/Login.module.css';
 import { useRouter } from 'next/router';
+import { magic } from '../lib/magic-client';
 
 const LoginPage = () => {
   const router = useRouter();
 
+  useEffect(() => {
+    const handleComplete = () => setIsLoading(false);
+
+    router.events.on('routeChangeComplete', handleComplete);
+    router.events.on('routeChangeError', handleComplete);
+
+    return () => {
+      router.events.off('routeChangeComplete', handleComplete);
+      router.events.off('routeChangeError', handleComplete);
+    };
+  }, [router]);
+
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleOnChangeEmail = (e) => {
     setEmailError('');
@@ -22,15 +36,30 @@ const LoginPage = () => {
     }
   };
 
-  const handleLoginWithEmail = (e) => {
+  const handleLoginWithEmail = async (e) => {
     e.preventDefault();
     if (email) {
-      if (email === 'jbond@007.com') {
-        router.push('/');
+      if (email === 'pront23@gmail.com') {
+        // log in a user by their email
+        try {
+          setIsLoading(true);
+          const didToken = await magic.auth.loginWithMagicLink({ email });
+          console.log({ didToken });
+
+          if (didToken) {
+            router.push('/');
+          }
+        } catch {
+          // Handle errors if required!
+          console.log('Something went wrong logging in');
+          setIsLoading(false);
+        }
       } else {
+        setIsLoading(false);
         setEmailError('Invalid email');
       }
     } else {
+      setIsLoading(false);
       setEmail('');
       setEmailError('Enter a valid email address!');
     }
@@ -66,7 +95,7 @@ const LoginPage = () => {
           />
           <p className={styles.userMsg}>{emailError}</p>
           <button className={styles.loginBtn} onClick={handleLoginWithEmail}>
-            Sign In
+            {isLoading ? 'Loading...' : 'Sign In'}
           </button>
         </div>
       </main>

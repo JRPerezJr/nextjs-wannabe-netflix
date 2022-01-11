@@ -1,15 +1,42 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import Link from 'next/link';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 
-import styles from './Navbar.module.css';
-import Image from 'next/image';
+import { magic } from '../../lib/magic-client';
 
-const Navbar = ({ username }) => {
+import styles from './Navbar.module.css';
+
+const Navbar = () => {
+  const [userName, setUserName] = useState('');
+  const [showDropdown, setShowDropdown] = useState(false);
+
   const router = useRouter();
 
-  const [showDropdown, setShowDropdown] = useState(false);
+  useEffect(async () => {
+    try {
+      const { email } = await magic.user.getMetadata();
+      if (email) {
+        setUserName(email);
+      }
+    } catch (error) {
+      console.log('Error fetching email', error);
+    }
+  }, []);
+
+  const handleSignOut = async (e) => {
+    e.preventDefault();
+
+    try {
+      await magic.user.logout();
+
+      await magic.user.isLoggedIn();
+      router.push('/login');
+    } catch (error) {
+      console.log('Error fetching email', error);
+      router.push('/login');
+    }
+  };
 
   return (
     <div className={styles.container}>
@@ -41,7 +68,7 @@ const Navbar = ({ username }) => {
               className={styles.usernameBtn}
               onClick={() => setShowDropdown(!showDropdown)}
             >
-              <p className={styles.username}>{username}</p>
+              <p className={styles.username}>{userName}</p>
               <Image
                 src={'/static/expand_icon.svg'}
                 alt="expand dropdown"
@@ -53,9 +80,10 @@ const Navbar = ({ username }) => {
             {showDropdown && (
               <div className={styles.navDropdown}>
                 <div>
-                  <Link href="/login">
-                    <a className={styles.linkName}>Sign out</a>
-                  </Link>
+                  <a className={styles.linkName} onClick={handleSignOut}>
+                    Sign out
+                  </a>
+
                   <div className={styles.lineWrapper}></div>
                 </div>
               </div>
