@@ -1,12 +1,14 @@
 import { useState } from 'react';
 
 import Link from 'next/link';
-import router from 'next/router';
+import { useRouter } from 'next/router';
 
 import styles from './Navbar.module.css';
 import Image from 'next/image';
 
 const Navbar = ({ username }) => {
+  const router = useRouter();
+
   const [showDropdown, setShowDropdown] = useState(false);
 
   return (
