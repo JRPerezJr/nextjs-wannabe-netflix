@@ -31,6 +31,7 @@ const LoginPage = () => {
         setEmailError('Invalid email');
       }
     } else {
+      setEmail('');
       setEmailError('Enter a valid email address!');
     }
   };
