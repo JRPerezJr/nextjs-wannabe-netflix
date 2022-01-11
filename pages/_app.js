@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import { magic } from '../lib/magic-client';
 
 import '../styles/globals.css';
+import AppLoader from '../components/Loader/Loader';
 
 function MyApp({ Component, pageProps }) {
   const [isLoading, setIsLoading] = useState(true);
@@ -37,7 +38,7 @@ function MyApp({ Component, pageProps }) {
     };
   }, [router]);
 
-  return isLoading ? <div>Loading...</div> : <Component {...pageProps} />;
+  return isLoading ? <AppLoader /> : <Component {...pageProps} />;
 }
 
 export default MyApp;
