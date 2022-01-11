@@ -13,7 +13,7 @@ const Layout = ({ title, description, children }) => {
         {description && <meta name="description" content={description}></meta>}
       </Head>
       <div className={styles.main}>
-        <Navbar username="james@jbond.com" />
+        <Navbar />
         <main>{children}</main>
       </div>
     </>
