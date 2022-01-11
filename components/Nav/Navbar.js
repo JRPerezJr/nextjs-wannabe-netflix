@@ -30,7 +30,7 @@ const Navbar = () => {
     try {
       await magic.user.logout();
 
-      console.log(await magic.user.isLoggedIn());
+      await magic.user.isLoggedIn();
       router.push('/login');
     } catch (error) {
       console.log('Error fetching email', error);
