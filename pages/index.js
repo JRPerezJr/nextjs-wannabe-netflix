@@ -6,11 +6,18 @@ import { getPopularVideos, getVideos } from '../lib/videos';
 import styles from '../styles/Home.module.css';
 
 export async function getServerSideProps() {
-  const disneyVideos = await getVideos('disney trailers');
+  // query and etag
+  const disneyVideos = await getVideos(
+    'disney trailers',
+    'vUtRQlIV0htg-1YJHA3aEotP7bk'
+  );
 
-  const productivityVideos = await getVideos('productivity');
+  const productivityVideos = await getVideos(
+    'productivity',
+    'aM84q-WDz9MET0dEMlYEIE2CgFk'
+  );
 
-  const travelVideos = await getVideos('travel');
+  const travelVideos = await getVideos('travel', 'iikVRIe9im4ZzXlqxzhtwCLgUcg');
 
   const popularVideos = await getPopularVideos();
 
@@ -20,10 +27,10 @@ export async function getServerSideProps() {
 }
 
 export default function Home({
-  disneyVideos,
-  popularVideos,
-  productivityVideos,
-  travelVideos,
+  disneyVideos = [],
+  popularVideos = [],
+  productivityVideos = [],
+  travelVideos = [],
 }) {
   return (
     <Layout>
