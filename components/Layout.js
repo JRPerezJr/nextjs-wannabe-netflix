@@ -2,6 +2,7 @@ import Head from 'next/head';
 import Navbar from './Nav/Navbar';
 
 import styles from '../styles/Home.module.css';
+import Footer from './Footer/Footer';
 
 const Layout = ({ title, description, children }) => {
   return (
@@ -16,6 +17,7 @@ const Layout = ({ title, description, children }) => {
         <Navbar />
         <main>{children}</main>
       </div>
+      <Footer />
     </>
   );
 };
