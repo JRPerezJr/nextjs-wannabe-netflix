@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 
 import Modal from 'react-modal';
@@ -52,50 +53,58 @@ const Video = ({ video }) => {
   const formatterUS = new Intl.NumberFormat('en-US');
 
   return (
-    <div className={styles.container}>
-      <Navbar />
-      <Modal
-        className={styles.modal}
-        isOpen={true}
-        contentLabel="Watch Mojo"
-        onRequestClose={() => router.back()}
-        overlayClassName={styles.overlay}
-      >
-        <iframe
-          className={styles.videoPlayer}
-          id="ytplayer"
-          type="text/html"
-          width="100%"
-          height="360"
-          src={`https://www.youtube.com/embed/${router.query.videoId}?autoplay=1&origin=http://example.com&rel=1`}
-          frameborder="0"
-        />
-        <div className={styles.modalBody}>
-          <div className={styles.modalBodyContent}>
-            <div className={styles.col1}>
-              <p className={styles.publishTime}>
-                {published.toLocaleDateString()}
-              </p>
-              <p className={styles.title}>{title}</p>
-              <p className={styles.description}>{description}</p>
-            </div>
-            <div className={styles.col2}>
-              <p className={cls(styles.subText, styles.subTextWrapper)}>
-                <span className={styles.textColor}>From: </span>
-                <span className={styles.channelTitle}>{channelTitle}</span>
-              </p>
-              <p className={cls(styles.subText, styles.subTextWrapper)}>
-                <span className={styles.textColor}>View Count: </span>
-                <span className={styles.channelTitle}>
-                  {formatterUS.format(viewCount)}
-                </span>
-              </p>
+    <>
+      <Head>
+        <title>
+          {title ? `${title} - Wannabe Netflix` : 'Wannabe Netflix'}
+        </title>
+        {description && <meta name="description" content={description}></meta>}
+      </Head>
+      <div className={styles.container}>
+        <Navbar />
+        <Modal
+          className={styles.modal}
+          isOpen={true}
+          contentLabel="Watch Mojo"
+          onRequestClose={() => router.back()}
+          overlayClassName={styles.overlay}
+        >
+          <iframe
+            className={styles.videoPlayer}
+            id="ytplayer"
+            type="text/html"
+            width="100%"
+            height="360"
+            src={`https://www.youtube.com/embed/${router.query.videoId}?autoplay=1&origin=http://example.com&rel=1`}
+            frameborder="0"
+          />
+          <div className={styles.modalBody}>
+            <div className={styles.modalBodyContent}>
+              <div className={styles.col1}>
+                <p className={styles.publishTime}>
+                  {published.toLocaleDateString()}
+                </p>
+                <p className={styles.title}>{title}</p>
+                <p className={styles.description}>{description}</p>
+              </div>
+              <div className={styles.col2}>
+                <p className={cls(styles.subText, styles.subTextWrapper)}>
+                  <span className={styles.textColor}>From: </span>
+                  <span className={styles.channelTitle}>{channelTitle}</span>
+                </p>
+                <p className={cls(styles.subText, styles.subTextWrapper)}>
+                  <span className={styles.textColor}>View Count: </span>
+                  <span className={styles.channelTitle}>
+                    {formatterUS.format(viewCount)}
+                  </span>
+                </p>
+              </div>
             </div>
           </div>
-        </div>
-        <Footer />
-      </Modal>
-    </div>
+          <Footer />
+        </Modal>
+      </div>
+    </>
   );
 };
 
