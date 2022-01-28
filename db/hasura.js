@@ -1,10 +1,7 @@
-export async function isNewUser(token) {
+export async function isNewUser(token, issuer) {
   const operationsDoc = `
-  query MyQuery {
-    users(where:{issuer:{_eq:
-    ''
-    }})
-    {
+  query isNewUser($issuer: String!) {
+    users(where:{issuer:{_eq: $issuer}}){
       id
       email
       issuer
@@ -13,11 +10,13 @@ export async function isNewUser(token) {
 `;
   const response = await queryHasuraGraphQl(
     operationsDoc,
-    'MyQuery',
-    {},
+    'isNewUser',
+    {
+      issuer,
+    },
     token
   );
-  console.log({ response });
+  console.log({ response }, { issuer });
   return response?.users?.length === 0;
 }
 

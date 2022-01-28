@@ -24,7 +24,7 @@ export default async function login(req, res) {
         process.env.JWT_SECRET
       );
 
-      const isNewUserQuery = await isNewUser(token);
+      const isNewUserQuery = await isNewUser(token, metadata.issuer);
 
       res.status(200).send({ done: true, isNewUserQuery });
     } catch (error) {
