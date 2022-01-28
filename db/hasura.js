@@ -8,6 +8,7 @@ export async function isNewUser(token, issuer) {
     }
   }
 `;
+
   const response = await queryHasuraGraphQl(
     operationsDoc,
     'isNewUser',
@@ -17,7 +18,46 @@ export async function isNewUser(token, issuer) {
     token
   );
   console.log({ response }, { issuer });
-  return response?.users?.length === 0;
+  return response?.data?.users?.length === 0;
+}
+
+export async function createNewUser(token, metadata) {
+  const operationsDoc = `
+  mutation createNewUser(
+    $issuer: String!,
+    $email: String!,
+    $publicAddress: String!
+    ) {
+    insert_users(
+      objects: {
+        email: $email,
+        issuer: $issuer,
+        publicAddress:$publicAddress
+      }
+    ) {
+      returning {
+        email
+        id
+        issuer
+        }
+      }
+  }
+`;
+
+  const { issuer, email, publicAddress } = metadata;
+
+  const response = await queryHasuraGraphQl(
+    operationsDoc,
+    'createNewUser',
+    {
+      issuer,
+      email,
+      publicAddress,
+    },
+    token
+  );
+  console.log({ response }, { issuer });
+  return response;
 }
 
 export async function queryHasuraGraphQl(
