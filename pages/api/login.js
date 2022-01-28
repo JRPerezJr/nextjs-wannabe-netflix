@@ -8,13 +8,8 @@ export default async function login(req, res) {
       const auth = req.headers.authorization;
       const didToken = auth ? auth.substr(7) : '';
 
-      console.log({ didToken });
-
-      //   invoke magic
       const metadata = await magicAdmin.users.getMetadataByToken(didToken);
-      console.log({ metadata });
 
-      //   create jwt
       const token = jwt.sign(
         {
           ...metadata,
@@ -28,9 +23,7 @@ export default async function login(req, res) {
         },
         process.env.JWT_SECRET
       );
-      console.log({ token });
 
-      //   check if user exists
       const isNewUserQuery = await isNewUser(token);
 
       res.status(200).send({ done: true, isNewUserQuery });
