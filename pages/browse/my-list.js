@@ -29,7 +29,7 @@ export async function getServerSideProps(context) {
 
 const MyList = ({
   myVideoList,
-  title = 'My List',
+  title = 'My Videos',
   description = 'My favorites video list',
 }) => {
   return (
@@ -39,7 +39,13 @@ const MyList = ({
       </Head>
       <main className={styles.main}>
         <div className={styles.sectionWrapper}>
-          <SectionCards title={title} videos={myVideoList} size="small" />
+          <SectionCards
+            title={title}
+            videos={myVideoList}
+            size="small"
+            shouldWrap
+            shouldScale={false}
+          />
         </div>
       </main>
     </Layout>
