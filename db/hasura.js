@@ -165,6 +165,34 @@ export async function updateStatsByUserId(
   );
 }
 
+export async function getWatchedVideos(userId, token) {
+  const operationsDoc = `
+    query watchedVideos (
+      $userId: String!,
+    ) {
+      stats(
+        where: {
+          watched: {_eq: true},
+          userId: {_eq: $userId},
+        }
+        ) {
+        videoId
+      }
+    }
+  `;
+
+  const response = await queryHasuraGraphQl(
+    operationsDoc,
+    'watchedVideos',
+    {
+      userId,
+    },
+    token
+  );
+
+  return response?.data?.stats;
+}
+
 export async function queryHasuraGraphQl(
   operationsDoc,
   operationName,

@@ -1,11 +1,21 @@
 import Banner from '../components/Banner/Banner';
 import Layout from '../components/Layout';
 import SectionCards from '../components/SectionCards/SectionCards';
-import { getPopularVideos, getVideos } from '../lib/videos';
+import {
+  getPopularVideos,
+  getVideos,
+  getWatchItAgainVideos,
+} from '../lib/videos';
 
 import styles from '../styles/Home.module.css';
 
 export async function getServerSideProps() {
+  // const userId = '';
+  // const token = '';
+
+  // const watchItAgainVideos = await getWatchItAgainVideos(userId, token);
+  // console.log({ watchItAgainVideos });
+
   // query and etag
   const disneyVideos = await getVideos(
     'disney trailers',
