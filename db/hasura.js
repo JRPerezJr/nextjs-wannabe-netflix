@@ -96,7 +96,7 @@ export async function findVideoIdByUser(token, userId, videoId) {
     token
   );
 
-  return response?.data?.stats?.length > 0;
+  return response?.data?.stats;
 }
 
 export async function insertStatsByUserId(
@@ -110,7 +110,7 @@ export async function insertStatsByUserId(
       $watched: Boolean!,
       $videoId: String!
     ){
-      insert_stats_one({
+      insert_stats_one(object: {
           favorite: $favorite,
           userId: $userId,
           watched: $watched,
@@ -174,7 +174,7 @@ export async function queryHasuraGraphQl(
   const result = await fetch(process.env.NEXT_PUBLIC_HASURA_ADMIN_URL, {
     method: 'POST',
     headers: {
-      'content-type': 'application/json',
+      'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
       'x-hasura-admin-secret': process.env.NEXT_PUBLIC_HASURA_ADMIN_KEY,
     },
