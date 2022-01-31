@@ -14,6 +14,7 @@ import Navbar from '../../components/Nav/Navbar';
 import Footer from '../../components/Footer/Footer';
 import Like from '../../components/Icons/LikeIcon';
 import Dislike from '../../components/Icons/DislikeIcon';
+import { runRatingService } from '../../lib/rating-service';
 
 Modal.setAppElement('#__next');
 
@@ -48,6 +49,8 @@ const Video = ({ video }) => {
 
   const router = useRouter();
 
+  const videoId = router.query.videoId;
+
   const {
     title,
     publishedAt,
@@ -59,14 +62,28 @@ const Video = ({ video }) => {
   const published = new Date(publishedAt);
   const formatterUS = new Intl.NumberFormat('en-US');
 
-  const handleToggleLike = () => {
-    setToggleLike(!toggleLike);
+  const handleToggleLike = async () => {
+    const val = !toggleLike;
+
+    setToggleLike(val);
     setToggleDislike(toggleLike);
+
+    const favorite = val ? 1 : 0;
+    const response = await runRatingService(favorite, videoId);
+
+    console.log('data', await response.json());
   };
 
-  const handleToggleDislike = () => {
+  const handleToggleDislike = async () => {
+    const val = !toggleDislike;
+
     setToggleDislike(!toggleDislike);
     setToggleLike(toggleDislike);
+
+    const favorite = val ? 0 : 1;
+    const response = await runRatingService(favorite, videoId);
+
+    console.log('data', await response.json());
   };
 
   return (
@@ -92,8 +109,8 @@ const Video = ({ video }) => {
             type="text/html"
             width="100%"
             height="360"
-            src={`https://www.youtube.com/embed/${router.query.videoId}?autoplay=1&origin=http://example.com&rel=1`}
-            frameborder="0"
+            src={`https://www.youtube.com/embed/${videoId}?autoplay=1&origin=http://example.com&rel=1`}
+            frameBorder="0"
           />
 
           <div className={styles.likeDislikeBtnWrapper}>
