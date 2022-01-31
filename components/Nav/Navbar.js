@@ -63,7 +63,7 @@ const Navbar = () => {
             className={styles.navItem2}
             onClick={() => router.push('/browse/my-list')}
           >
-            My List
+            My Videos
           </li>
         </ul>
         <nav className={styles.navContainer}>
