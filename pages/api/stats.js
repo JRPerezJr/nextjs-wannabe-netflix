@@ -46,7 +46,7 @@ export default async function stats(req, res) {
           }
         }
 
-        res.status(200).send({ decodedToken, findVideoId });
+        // res.status(200).send({ decodedToken, findVideoId });
       }
     } catch (error) {
       console.log('Error occurred /stats', error);
