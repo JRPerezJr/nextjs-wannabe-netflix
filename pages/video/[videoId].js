@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import Head from 'next/head';
 import { useRouter } from 'next/router';
@@ -14,7 +14,7 @@ import Navbar from '../../components/Nav/Navbar';
 import Footer from '../../components/Footer/Footer';
 import Like from '../../components/Icons/LikeIcon';
 import Dislike from '../../components/Icons/DislikeIcon';
-import { runRatingService } from '../../lib/rating-service';
+import { fetchRatingService, runRatingService } from '../../lib/rating-service';
 
 Modal.setAppElement('#__next');
 
@@ -59,6 +59,20 @@ const Video = ({ video }) => {
     statistics: { viewCount } = { viewCount: 0 },
   } = video;
 
+  useEffect(async () => {
+    const response = await fetchRatingService(videoId);
+    const data = await response.json();
+
+    if (data.length > 0) {
+      const favorite = data[0].favorite;
+      if (favorite === 1) {
+        setToggleLike(true);
+      } else if (favorite === 0) {
+        setToggleDislike(true);
+      }
+    }
+  }, []);
+
   const published = new Date(publishedAt);
   const formatterUS = new Intl.NumberFormat('en-US');
 
@@ -69,6 +83,7 @@ const Video = ({ video }) => {
     setToggleDislike(toggleLike);
 
     const favorite = val ? 1 : 0;
+
     const response = await runRatingService(favorite, videoId);
 
     console.log('data', await response.json());
@@ -81,6 +96,7 @@ const Video = ({ video }) => {
     setToggleLike(toggleDislike);
 
     const favorite = val ? 0 : 1;
+
     const response = await runRatingService(favorite, videoId);
 
     console.log('data', await response.json());
