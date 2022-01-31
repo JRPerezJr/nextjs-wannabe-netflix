@@ -8,20 +8,20 @@ import { magic } from '../../lib/magic-client';
 import styles from './Navbar.module.css';
 
 const Navbar = () => {
-  const [userName, setUserName] = useState('');
   const [showDropdown, setShowDropdown] = useState(false);
+  const [userName, setUserName] = useState('');
+  const [didToken, setDidToken] = useState('');
 
   const router = useRouter();
 
   useEffect(async () => {
     try {
-      const { email } = await magic.user.getMetadata();
-
+      const { email, issuer } = await magic.user.getMetadata();
       const didToken = await magic.user.getIdToken();
-      console.log({ didToken });
 
       if (email) {
         setUserName(email);
+        setDidToken(didToken);
       }
     } catch (error) {
       console.log('Error fetching email', error);
@@ -32,12 +32,17 @@ const Navbar = () => {
     e.preventDefault();
 
     try {
-      await magic.user.logout();
+      const response = await fetch('/api/logout', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${didToken}`,
+          'Content-Type': 'application/json',
+        },
+      });
 
-      await magic.user.isLoggedIn();
-      router.push('/login');
+      const res = await response.json();
     } catch (error) {
-      console.log('Error fetching email', error);
+      console.error('Error logging out', error);
       router.push('/login');
     }
   };
@@ -63,7 +68,7 @@ const Navbar = () => {
             className={styles.navItem2}
             onClick={() => router.push('/browse/my-list')}
           >
-            My List
+            My Videos
           </li>
         </ul>
         <nav className={styles.navContainer}>
