@@ -103,7 +103,6 @@ export async function insertStatsByUserId(
   token,
   { favorite, userId, watched, videoId }
 ) {
-  console.log({ favorite, userId, watched, videoId });
   const operationsDoc = `
     mutation insertStats(
       $favorite: Int!,
