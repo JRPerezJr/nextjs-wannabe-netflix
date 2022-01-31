@@ -207,7 +207,6 @@ export async function queryMyVideoList(userId, token) {
     token
   );
 
-  console.log({ response });
   return response?.data?.stats;
 }
 
