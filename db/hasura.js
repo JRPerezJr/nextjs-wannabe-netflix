@@ -110,7 +110,7 @@ export async function insertStatsByUserId(
       $watched: Boolean!,
       $videoId: String!
     ){
-      insert_stats_one({
+      insert_stats_one(object: {
           favorite: $favorite,
           userId: $userId,
           watched: $watched,
