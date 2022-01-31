@@ -17,8 +17,7 @@ export default async function stats(req, res) {
       const { videoId } = inputParams;
 
       if (videoId) {
-        const userId = verifyToken(token);
-
+        const userId = await verifyToken(token);
         const findVideo = await findVideoIdByUser(token, userId, videoId);
 
         const doesStatsExist = findVideo?.length > 0;
@@ -50,8 +49,6 @@ export default async function stats(req, res) {
             res.status(404).send({ user: null, msg: 'Video not found' });
           }
         }
-      } else {
-        res.status(500).send({ msg: 'videoId is required' });
       }
     }
   } catch (error) {
