@@ -103,29 +103,28 @@ export async function insertStatsByUserId(
   token,
   { favorite, userId, watched, videoId }
 ) {
-  const insertOperationsDoc = `
+  console.log({ favorite, userId, watched, videoId });
+  const operationsDoc = `
     mutation insertStats(
       $favorite: Int!,
       $userId: String!,
       $watched: Boolean!,
-      $videoId: String!
-    ){
-      insert_stats_one(object: {
+      $videoId: String!) {
+        insert_stats_one(object: {
           favorite: $favorite,
           userId: $userId,
           watched: $watched,
-          videoId: $videoId
-        }){
+          videoId: $videoId}) {
           favorite
           userId
         }
-    } 
-  `;
+    }
+`;
 
   return await queryHasuraGraphQl(
-    insertOperationsDoc,
+    operationsDoc,
     'insertStats',
-    { favorite, videoId, userId, watched },
+    { favorite, userId, watched, videoId },
     token
   );
 }
@@ -134,7 +133,7 @@ export async function updateStatsByUserId(
   token,
   { favorite, userId, watched, videoId }
 ) {
-  const updateOperationsDoc = `
+  const operationsDoc = `
     mutation updateStats(
       $favorite: Int!,
       $userId: String!,
@@ -158,7 +157,7 @@ export async function updateStatsByUserId(
   `;
 
   return await queryHasuraGraphQl(
-    updateOperationsDoc,
+    operationsDoc,
     'updateStats',
     { favorite, userId, watched, videoId },
     token
@@ -190,6 +189,26 @@ export async function getWatchedVideos(userId, token) {
     token
   );
 
+  return response?.data?.stats;
+}
+
+export async function queryMyVideoList(userId, token) {
+  const operationsDoc = `
+  query MyVideoList($userId: String!) {
+    stats(where: {userId: {_eq: $userId}, favorite: {_eq: 1}}) {
+      videoId
+    }
+  }
+`;
+
+  const response = await queryHasuraGraphQl(
+    operationsDoc,
+    'MyVideoList',
+    { userId },
+    token
+  );
+
+  console.log({ response });
   return response?.data?.stats;
 }
 
