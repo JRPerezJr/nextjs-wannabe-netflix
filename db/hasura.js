@@ -190,7 +190,6 @@ export async function getWatchedVideos(userId, token) {
     token
   );
 
-  console.log(response?.data);
   return response?.data?.stats;
 }
 
