@@ -32,12 +32,17 @@ const Navbar = () => {
     e.preventDefault();
 
     try {
-      await magic.user.logout();
+      const response = await fetch('/api/logout', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${didToken}`,
+          'Content-Type': 'application/json',
+        },
+      });
 
-      await magic.user.isLoggedIn();
-      router.push('/login');
+      const res = await response.json();
     } catch (error) {
-      console.log('Error fetching email', error);
+      console.error('Error logging out', error);
       router.push('/login');
     }
   };
