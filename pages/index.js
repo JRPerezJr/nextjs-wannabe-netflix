@@ -79,7 +79,11 @@ export default function Home({
           videos={productivityVideos}
           size="medium"
         />
-        <SectionCards title="Popular" videos={popularVideos} size="small" />
+        <SectionCards
+          title="Popular in Japan"
+          videos={popularVideos}
+          size="small"
+        />
       </div>
     </Layout>
   );
