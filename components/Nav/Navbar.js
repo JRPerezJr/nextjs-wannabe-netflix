@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -14,18 +15,21 @@ const Navbar = () => {
 
   const router = useRouter();
 
-  useEffect(async () => {
-    try {
-      const { email, issuer } = await magic.user.getMetadata();
-      const didToken = await magic.user.getIdToken();
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const { email, issuer } = await magic.user.getMetadata();
+        const didToken = await magic.user.getIdToken();
 
-      if (email) {
-        setUserName(email);
-        setDidToken(didToken);
+        if (email) {
+          setUserName(email);
+          setDidToken(didToken);
+        }
+      } catch (error) {
+        console.log('Error fetching email', error);
       }
-    } catch (error) {
-      console.log('Error fetching email', error);
-    }
+    };
+    fetchUserData();
   }, []);
 
   const handleSignOut = async (e) => {
@@ -50,16 +54,18 @@ const Navbar = () => {
   return (
     <div className={styles.container}>
       <div className={styles.wrapper}>
-        <a className={styles.logoLink} href="/">
-          <div className={styles.logoWrapper}>
-            <Image
-              src={'/static/netflix.svg'}
-              alt="netflix logo"
-              width="128px"
-              height="34px"
-            />
-          </div>
-        </a>
+        <Link href="/">
+          <a className={styles.logoLink}>
+            <div className={styles.logoWrapper}>
+              <Image
+                src={'/static/netflix.svg'}
+                alt="netflix logo"
+                width="128px"
+                height="34px"
+              />
+            </div>
+          </a>
+        </Link>
         <ul className={styles.navItems}>
           <li className={styles.navItem} onClick={() => router.push('/')}>
             Home
