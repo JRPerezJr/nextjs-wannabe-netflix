@@ -59,19 +59,25 @@ const Video = ({ video }) => {
     statistics: { viewCount } = { viewCount: 0 },
   } = video;
 
-  useEffect(async () => {
-    const response = await fetchRatingService(videoId);
-    const data = await response.json();
+  useEffect(
+    () => {
+      const startRatingService = async () => {
+        const response = await fetchRatingService(videoId);
+        const data = await response.json();
 
-    if (data.length > 0) {
-      const favorite = data[0].favorite;
-      if (favorite === 1) {
-        setToggleLike(true);
-      } else if (favorite === 0) {
-        setToggleDislike(true);
-      }
-    }
-  }, []);
+        if (data.length > 0) {
+          const favorite = data[0].favorite;
+          if (favorite === 1) {
+            setToggleLike(true);
+          } else if (favorite === 0) {
+            setToggleDislike(true);
+          }
+        }
+      };
+      startRatingService();
+    },
+    [] // eslint-disable-line
+  );
 
   const published = new Date(publishedAt);
   const formatterUS = new Intl.NumberFormat('en-US');

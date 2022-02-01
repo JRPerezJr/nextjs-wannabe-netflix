@@ -2,12 +2,14 @@ import { useEffect, useState } from 'react';
 
 import Head from 'next/head';
 import Image from 'next/image';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+
+import { magic } from '../lib/magic-client';
 
 import validator from 'validator';
 
 import styles from '../styles/Login.module.css';
-import { useRouter } from 'next/router';
-import { magic } from '../lib/magic-client';
 
 const LoginPage = () => {
   const router = useRouter();
@@ -78,16 +80,18 @@ const LoginPage = () => {
       </Head>
       <header className={styles.header}>
         <div className={styles.headerWrapper}>
-          <a className={styles.logoLink} href="/">
-            <div className={styles.logoWrapper}>
-              <Image
-                src={'/static/netflix.svg'}
-                alt="netflix logo"
-                width="128px"
-                height="34px"
-              />
-            </div>
-          </a>
+          <Link href="/">
+            <a className={styles.logoLink}>
+              <div className={styles.logoWrapper}>
+                <Image
+                  src={'/static/netflix.svg'}
+                  alt="netflix logo"
+                  width="128px"
+                  height="34px"
+                />
+              </div>
+            </a>
+          </Link>
         </div>
       </header>
       <main className={styles.main}>

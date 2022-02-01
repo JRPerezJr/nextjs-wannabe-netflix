@@ -16,15 +16,21 @@ function MyApp({ Component, pageProps }) {
   // else
   // route to /login
 
-  useEffect(async () => {
-    const isLoggedIn = await magic.user.isLoggedIn();
+  useEffect(
+    () => {
+      const confirmLogin = async () => {
+        const isLoggedIn = await magic.user.isLoggedIn();
 
-    if (isLoggedIn) {
-      router.push('/');
-    } else {
-      router.push('/login');
-    }
-  }, []);
+        if (isLoggedIn) {
+          router.push('/');
+        } else {
+          router.push('/login');
+        }
+      };
+      confirmLogin();
+    },
+    [] // eslint-disable-line
+  );
 
   useEffect(() => {
     const handleComplete = () => setIsLoading(false);
